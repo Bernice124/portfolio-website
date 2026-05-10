@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaPure | Purified Drinking Water Factory</title>
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+      --secondary: #0c4a6e;
+      --accent: #06b6d4;
+      --bg: #ffffff;
+      --bg-alt: #f0f9ff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 24px rgba(14,165,233,0.08);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1140px, 90%); margin: 0 auto; }
+
+    /* NAV */
+    header {
+      position: sticky; top: 0;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
+    .logo { font-size: 1.4rem; font-weight: 800; color: var(--secondary); }
+    .logo span { color: var(--primary); }
+    .nav-links { display: flex; gap: 26px; list-style: none; }
+    .nav-links a { font-size: 0.95rem; font-weight: 500; color: var(--text-muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta {
+      padding: 10px 22px; background: var(--primary); color: #fff;
+      border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--primary-dark); }
+
+    /* HERO */
+    .hero { padding: 90px 0 70px; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; background: #e0f2fe; color: var(--primary-dark);
+      border-radius: 999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 18px;
+    }
+    .hero h1 { font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.15; margin-bottom: 18px; color: var(--secondary); }
+    .hero h1 span { color: var(--primary); }
+    .hero p { font-size: 1.08rem; color: var(--text-muted); max-width: 48ch; margin-bottom: 30px; }
+    .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: 14px 28px; border-radius: 10px;
+      font-weight: 700; font-size: 0.95rem; transition: all 0.2s; cursor: pointer; border: none;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .hero-visual {
+      background: linear-gradient(135deg, #e0f2fe, #cffafe);
+      border-radius: 24px; padding: 50px; display: grid; place-items: center;
+      min-height: 360px; position: relative; overflow: hidden;
+    }
+    .hero-visual::before {
+      content: ''; position: absolute; width: 180px; height: 180px;
+      background: rgba(14,165,233,0.12); border-radius: 50%; top: -30px; right: -30px;
+    }
+    .hero-visual::after {
+      content: ''; position: absolute; width: 120px; height: 120px;
+      background: rgba(6,182,212,0.1); border-radius: 50%; bottom: -20px; left: -20px;
+    }
+    .water-icon { font-size: 5rem; text-align: center; }
+    .water-icon small { display: block; font-size: 1rem; color: var(--text-muted); margin-top: 10px; }
+
+    /* SECTION COMMON */
+    section { padding: 80px 0; }
+    section:nth-child(even) { background: var(--bg-alt); }
+    .section-header { text-align: center; max-width: 620px; margin: 0 auto 50px; }
+    .section-header h2 { font-size: 2.1rem; margin-bottom: 12px; color: var(--secondary); }
+    .section-header p { color: var(--text-muted); font-size: 1.05rem; }
+
+    /* NECESSITIES */
+    .necessities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .necessity-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 30px 24px; position: relative; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .necessity-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .priority-badge {
+      position: absolute; top: 14px; right: 14px;
+      padding: 4px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    }
+    .priority-high .priority-badge { background: #fee2e2; color: #dc2626; }
+    .priority-med .priority-badge { background: #fef3c7; color: #d97706; }
+    .necessity-icon { font-size: 2.2rem; margin-bottom: 14px; }
+    .necessity-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .necessity-card > p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 14px; }
+    .necessity-details { list-style: none; display: grid; gap: 6px; }
+    .necessity-details li {
+      font-size: 0.85rem; color: var(--text-muted); padding-left: 18px; position: relative;
+    }
+    .necessity-details li::before { content: '\2022'; position: absolute; left: 4px; color: var(--primary); font-weight: 700; }
+
+    /* EQUIPMENT */
+    .equipment-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .equip-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px 20px; text-align: center; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .equip-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .equip-icon { font-size: 2rem; margin-bottom: 12px; }
+    .equip-card h3 { font-size: 0.98rem; margin-bottom: 8px; }
+    .equip-card p { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 12px; }
+    .equip-cost {
+      display: inline-block; padding: 4px 12px; background: #e0f2fe; color: var(--primary-dark);
+      border-radius: 999px; font-size: 0.8rem; font-weight: 700;
+    }
+
+    /* COMPLIANCE */
+    .compliance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .compliance-card {
+      background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px;
+    }
+    .compliance-card h3 { font-size: 1.1rem; margin-bottom: 16px; }
+    .compliance-card ul { list-style: none; display: grid; gap: 10px; }
+    .compliance-card li {
+      font-size: 0.9rem; color: var(--text-muted); padding-left: 20px; position: relative;
+    }
+    .compliance-card li::before { content: '\2713'; position: absolute; left: 0; color: var(--primary); font-weight: 700; }
+
+    /* COSTS TABLE */
+    .costs-table-wrap { overflow-x: auto; margin-bottom: 40px; }
+    .costs-table {
+      width: 100%; border-collapse: collapse; background: var(--bg);
+      border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border);
+    }
+    .costs-table th, .costs-table td { padding: 14px 18px; text-align: left; font-size: 0.9rem; }
+    .costs-table th { background: var(--secondary); color: #fff; font-weight: 600; }
+    .costs-table td { border-bottom: 1px solid var(--border); }
+    .costs-table tbody tr:hover { background: #f0f9ff; }
+    .total-row td { background: #e0f2fe; font-weight: 700; color: var(--secondary); }
+
+    .roi-box {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px;
+    }
+    .roi-item { text-align: center; }
+    .roi-number { font-size: 2rem; font-weight: 800; color: var(--primary-dark); }
+    .roi-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
+    /* PROCESS */
+    .process-flow {
+      display: flex; align-items: flex-start; gap: 8px; overflow-x: auto; padding: 20px 0;
+    }
+    .process-step {
+      flex: 1; min-width: 160px; background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px 16px; text-align: center;
+    }
+    .step-num {
+      width: 36px; height: 36px; background: var(--primary); color: #fff;
+      border-radius: 50%; display: grid; place-items: center; font-weight: 800;
+      margin: 0 auto 12px; font-size: 0.9rem;
+    }
+    .process-step h4 { font-size: 0.95rem; margin-bottom: 6px; }
+    .process-step p { font-size: 0.8rem; color: var(--text-muted); }
+    .process-arrow { font-size: 1.5rem; color: var(--primary); align-self: center; padding-top: 20px; }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, var(--secondary), #075985) !important;
+      color: #fff; text-align: center; padding: 80px 0;
+    }
+    .cta-section h2 { font-size: 2.3rem; margin-bottom: 14px; }
+    .cta-section p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; max-width: 50ch; margin-left: auto; margin-right: auto; }
+    .cta-section .btn-primary { background: var(--primary); font-size: 1.05rem; padding: 16px 36px; }
+
+    /* FOOTER */
+    footer { background: #0f172a; color: #94a3b8; padding: 60px 0 30px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer-brand { font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .footer-brand span { color: var(--primary); }
+    footer h4 { color: #fff; margin-bottom: 14px; font-size: 0.95rem; }
+    .footer-links { list-style: none; display: grid; gap: 8px; }
+    .footer-links a { font-size: 0.9rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--primary); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; text-align: center; font-size: 0.85rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .equipment-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 60px 0 40px; }
+      .hero-visual { min-height: 220px; }
+      .necessities-grid { grid-template-columns: 1fr; }
+      .equipment-grid { grid-template-columns: 1fr; }
+      .compliance-grid { grid-template-columns: 1fr; }
+      .roi-box { grid-template-columns: repeat(2, 1fr); }
+      .process-flow { flex-direction: column; align-items: stretch; }
+      .process-arrow { transform: rotate(90deg); text-align: center; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .roi-box { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <div class="logo">Aqua<span>Pure</span></div>
+      <ul class="nav-links">
+        <li><a href="#necessities">Necessities</a></li>
+        <li><a href="#equipment">Equipment</a></li>
+        <li><a href="#compliance">Compliance</a></li>
+        <li><a href="#costs">Costs</a></li>
+        <li><a href="#process">Process</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Start Your Factory</a>
+    </div>
+  </header>
+
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero">
+        <div>
+          <div class="hero-tag">&#128167; Complete Startup Guide</div>
+          <h1>Start Your <span>Purified Water</span> Factory</h1>
+          <p>Everything you need to know to launch a profitable drinking water purification business - from permits to production lines.</p>
+          <div class="hero-buttons">
+            <a href="#necessities" class="btn btn-primary">View Requirements</a>
+            <a href="#costs" class="btn btn-outline">Startup Costs</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="water-icon">&#128167;<br><small>Pure. Clean. Profitable.</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIRST NECESSITIES -->
+  <section id="necessities">
+    <div class="container">
+      <div class="section-header">
+        <h2>First Necessities to Run</h2>
+        <p>Before production begins, these are the critical requirements you must secure to legally and safely operate a purified water factory.</p>
+      </div>
+      <div class="necessities-grid">
+        <div class="necessity-card priority-high">
+          <div class="priority-badge">Priority 1</div>
+          <div class="necessity-icon">&#128220;</div>
+          <h3>Business Registration &amp; Licenses</h3>
+          <p>Register your company, obtain a business license, and secure food/beverage manufacturing permits from local authorities.</p>
+          <ul class="necessity-details">
+            <li>Business registration certificate</li>
+            <li>Food manufacturing license</li>
+            <li>Environmental clearance</li>
+            <li>Water extraction permit</li>
+          </ul>
+        </div>
+        <div class="necessity-card priority-high">
+          <div class="priority-badge">Priority 2</div>
+          <div class="necessity-icon">&#127968;</div>
+          <h3>Factory Location &amp; Space</h3>
+          <p>Secure a facility with adequate space (minimum 2,000-5,000 sq ft), proper drainage, and access to a reliable water source.</p>
+          <ul class="necessity-details">
+            <li>Minimum 2,000 sq ft production area</li>
+            <li>Separate storage &amp; packaging zones</li>
+            <li>Proper ventilation &amp; drainage</li>
+            <li>Proximity to water source</li>
+          </ul>
+        </div>
+        <div class="necessity-card priority-high">
+          <div class="priority-badge">Priority 3</div>
+          <div class="necessity-icon">&#128167;</div>
+          <h3>Water Source Approval</h3>
+          <p>Identify and test your water source. Get lab certification confirming the source meets safety standards for purification input.</p>
+          <ul class="necessity-details">
+            <li>Borehole, municipal, or spring source</li>
+            <li>Lab water quality analysis</li>
+            <li>Source sustainability report</li>
+            <li>Water rights documentation</li>
+          </ul>
+        </div>
+        <div class="necessity-card priority-med">
+          <div class="priority-badge">Priority 4</div>
+          <div class="necessity-icon">&#9889;</div>
+          <h3>Power &amp; Utilities</h3>
+          <p>Reliable electricity (3-phase recommended), backup generator, and plumbing infrastructure for continuous operations.</p>
+          <ul class="necessity-details">
+            <li>3-phase industrial power connection</li>
+            <li>Backup generator (20-50 kVA)</li>
+            <li>Industrial plumbing system</li>
+            <li>Waste water disposal setup</li>
+          </ul>
+        </div>
+        <div class="necessity-card priority-med">
+          <div class="priority-badge">Priority 5</div>
+          <div class="necessity-icon">&#128181;</div>
+          <h3>Startup Capital</h3>
+          <p>Secure funding for equipment, facility setup, initial raw materials, staff salaries, and 3-6 months operating reserves.</p>
+          <ul class="necessity-details">
+            <li>Equipment &amp; machinery budget</li>
+            <li>Facility lease/renovation costs</li>
+            <li>Working capital (3-6 months)</li>
+            <li>Marketing launch budget</li>
+          </ul>
+        </div>
+        <div class="necessity-card priority-med">
+          <div class="priority-badge">Priority 6</div>
+          <div class="necessity-icon">&#128101;</div>
+          <h3>Trained Staff</h3>
+          <p>Hire qualified personnel including a plant operator, quality control technician, and production workers with food safety training.</p>
+          <ul class="necessity-details">
+            <li>Plant manager / operator</li>
+            <li>Quality control technician</li>
+            <li>Production line workers</li>
+            <li>Delivery &amp; logistics staff</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPMENT -->
+  <section id="equipment" style="background: var(--bg-alt);">
+    <div class="container">
+      <div class="section-header">
+        <h2>Essential Equipment</h2>
+        <p>The core machinery and systems required for a complete water purification production line.</p>
+      </div>
+      <div class="equipment-grid">
+        <div class="equip-card">
+          <div class="equip-icon">&#128688;</div>
+          <h3>Raw Water Storage Tanks</h3>
+          <p>Food-grade stainless steel or polyethylene tanks (5,000-20,000 liters) for raw water intake and holding.</p>
+          <div class="equip-cost">$2,000 - $8,000</div>
+        </div>
+        <div class="equip-card">
+          <div class="equip-icon">&#9899;</div>
+          <h3>Sediment Filtration System</h3>
+          <p>Multi-stage sand and carbon filters to remove particles, chlorine, and organic matter from source water.</p>
+          <div class="equip-cost">$3,000 - $12,000</div>
+        </div>
+        <div class="equip-card">
+          <div class="equip-icon">&#128300;</div>
+          <h3>Reverse Osmosis (RO) System</h3>
+          <p>Industrial-grade RO membranes (1,000-10,000 LPH capacity) - the heart of your purification process.</p>
+          <div class="equip-cost">$8,000 - $45,000</div>
+        </div>
+        <div class="equip-card">
+          <div class="equip-icon">&#9728;&#65039;</div>
+          <h3>UV Sterilization Unit</h3>
+          <p>Ultraviolet disinfection system to eliminate bacteria, viruses, and microorganisms without chemicals.</p>
+          <div class="equip-cost">$1,500 - $5,000</div>
+        </div>
+        <div class="equip-card">
+          <div class="equip-icon">&#127861;</div>
+          <h3>Ozone Generator</h3>
+          <p>Ozonation system for advanced disinfection and extended shelf life of bottled water products.</p>
+          <div class="equip-cost">$3,000 - $10,000</div>
+        </div>
+        <div class="equip-card">
+          <div class="equip-icon">&#128230;</div>
+          <h3>Bottle Filling &amp; Sealing Machine</h3>
+          <p>Automatic or semi-automatic filling, capping, and labeling machine (500-5,000 bottles/hour).</p>
+          <div class="equip-cost">$5,000 - $35,000</div>
+        </div>
+        <div class="equip-card">
+          <div class="equip-icon">&#128451;</div>
+          <h3>Purified Water Storage</h3>
+          <p>Stainless steel treated-water holding tanks with sealed lids to maintain purity before packaging.</p>
+          <div class="equip-cost">$2,500 - $10,000</div>
+        </div>
+        <div class="equip-card">
+          <div class="equip-icon">&#128202;</div>
+          <h3>Quality Testing Lab Equipment</h3>
+          <p>TDS meter, pH meter, turbidity meter, and microbiological testing kits for daily quality checks.</p>
+          <div class="equip-cost">$1,000 - $5,000</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPLIANCE -->
+  <section id="compliance">
+    <div class="container">
+      <div class="section-header">
+        <h2>Regulatory Compliance</h2>
+        <p>Meet these standards and certifications to legally sell purified drinking water in your market.</p>
+      </div>
+      <div class="compliance-grid">
+        <div class="compliance-card">
+          <h3>&#127919; Health &amp; Safety Standards</h3>
+          <ul>
+            <li>WHO drinking water guidelines compliance</li>
+            <li>Local health department inspection passed</li>
+            <li>HACCP food safety management system</li>
+            <li>Regular water quality lab testing reports</li>
+            <li>Employee health certificates</li>
+          </ul>
+        </div>
+        <div class="compliance-card">
+          <h3>&#128196; Required Certifications</h3>
+          <ul>
+            <li>ISO 22000 (Food Safety Management)</li>
+            <li>GMP (Good Manufacturing Practices)</li>
+            <li>NAFDAC / FDA / local equivalent approval</li>
+            <li>Environmental impact assessment</li>
+            <li>Fire safety certificate</li>
+          </ul>
+        </div>
+        <div class="compliance-card">
+          <h3>&#128269; Quality Control Protocols</h3>
+          <ul>
+            <li>Hourly TDS and pH monitoring</li>
+            <li>Daily microbial testing</li>
+            <li>Weekly full chemical analysis</li>
+            <li>Monthly third-party lab verification</li>
+            <li>Batch traceability records</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COSTS -->
+  <section id="costs" style="background: var(--bg-alt);">
+    <div class="container">
+      <div class="section-header">
+        <h2>Startup Cost Breakdown</h2>
+        <p>Realistic budget ranges to get your purified water factory from concept to first production.</p>
+      </div>
+      <div class="costs-table-wrap">
+        <table class="costs-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Small Scale</th>
+              <th>Medium Scale</th>
+              <th>Large Scale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Production Capacity</strong></td>
+              <td>1,000 - 3,000 LPH</td>
+              <td>5,000 - 10,000 LPH</td>
+              <td>20,000+ LPH</td>
+            </tr>
+            <tr>
+              <td>Purification Equipment</td>
+              <td>$15,000 - $30,000</td>
+              <td>$40,000 - $80,000</td>
+              <td>$100,000 - $250,000</td>
+            </tr>
+            <tr>
+              <td>Bottling/Packaging Line</td>
+              <td>$5,000 - $15,000</td>
+              <td>$20,000 - $50,000</td>
+              <td>$60,000 - $150,000</td>
+            </tr>
+            <tr>
+              <td>Facility Setup &amp; Renovation</td>
+              <td>$8,000 - $20,000</td>
+              <td>$25,000 - $60,000</td>
+              <td>$80,000 - $200,000</td>
+            </tr>
+            <tr>
+              <td>Licenses &amp; Certifications</td>
+              <td>$2,000 - $5,000</td>
+              <td>$5,000 - $12,000</td>
+              <td>$10,000 - $25,000</td>
+            </tr>
+            <tr>
+              <td>Working Capital (6 months)</td>
+              <td>$10,000 - $20,000</td>
+              <td>$30,000 - $60,000</td>
+              <td>$80,000 - $150,000</td>
+            </tr>
+            <tr class="total-row">
+              <td><strong>Total Estimated Investment</strong></td>
+              <td><strong>$40,000 - $90,000</strong></td>
+              <td><strong>$120,000 - $262,000</strong></td>
+              <td><strong>$330,000 - $775,000</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="roi-box">
+        <div class="roi-item">
+          <div class="roi-number">6-18</div>
+          <div class="roi-label">Months to Break Even</div>
+        </div>
+        <div class="roi-item">
+          <div class="roi-number">40-60%</div>
+          <div class="roi-label">Gross Profit Margin</div>
+        </div>
+        <div class="roi-item">
+          <div class="roi-number">$0.02</div>
+          <div class="roi-label">Cost Per Liter (avg)</div>
+        </div>
+        <div class="roi-item">
+          <div class="roi-number">$0.15+</div>
+          <div class="roi-label">Selling Price Per Liter</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="container">
+      <div class="section-header">
+        <h2>Purification Process Flow</h2>
+        <p>Step-by-step water treatment stages from raw intake to final bottled product.</p>
+      </div>
+      <div class="process-flow">
+        <div class="process-step">
+          <div class="step-num">1</div>
+          <h4>Raw Water Intake</h4>
+          <p>Water drawn from borehole, municipal supply, or natural spring into holding tanks.</p>
+        </div>
+        <div class="process-arrow">&#8594;</div>
+        <div class="process-step">
+          <div class="step-num">2</div>
+          <h4>Pre-Filtration</h4>
+          <p>Sand filter removes large particles; activated carbon removes chlorine &amp; odor.</p>
+        </div>
+        <div class="process-arrow">&#8594;</div>
+        <div class="process-step">
+          <div class="step-num">3</div>
+          <h4>Reverse Osmosis</h4>
+          <p>High-pressure membrane removes 95-99% of dissolved solids, salts, and contaminants.</p>
+        </div>
+        <div class="process-arrow">&#8594;</div>
+        <div class="process-step">
+          <div class="step-num">4</div>
+          <h4>UV + Ozone Treatment</h4>
+          <p>UV light kills bacteria/viruses; ozone provides residual disinfection for shelf life.</p>
+        </div>
+        <div class="process-arrow">&#8594;</div>
+        <div class="process-step">
+          <div class="step-num">5</div>
+          <h4>Mineral Addition</h4>
+          <p>Optional remineralization adds beneficial minerals (calcium, magnesium) for taste.</p>
+        </div>
+        <div class="process-arrow">&#8594;</div>
+        <div class="process-step">
+          <div class="step-num">6</div>
+          <h4>Filling &amp; Packaging</h4>
+          <p>Automated bottling, capping, labeling, date coding, and shrink-wrapping for distribution.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / CONTACT -->
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <h2>Ready to Launch Your Water Factory?</h2>
+      <p>Get a personalized startup plan with equipment recommendations, cost projections, and regulatory guidance for your location.</p>
+      <a href="mailto:info@aquapure-factory.com" class="btn btn-primary">Get Your Free Startup Plan</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">Aqua<span>Pure</span></div>
+          <p style="max-width:34ch;font-size:0.9rem;">Your complete guide to starting and running a profitable purified drinking water factory.</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#necessities">First Necessities</a></li>
+            <li><a href="#equipment">Equipment</a></li>
+            <li><a href="#compliance">Compliance</a></li>
+            <li><a href="#costs">Startup Costs</a></li>
+            <li><a href="#process">Process Flow</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="#">Business Plan Template</a></li>
+            <li><a href="#">Equipment Suppliers</a></li>
+            <li><a href="#">Regulatory Guides</a></li>
+            <li><a href="#">Training Programs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:info@aquapure-factory.com">info@aquapure-factory.com</a></li>
+            <li><a href="tel:+18005559876">1-800-555-9876</a></li>
+            <li><a href="#">Consultation Booking</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 AquaPure Factory Guide. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
