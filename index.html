@@ -147,6 +147,7 @@ h1 {
 }
 
 .section {
+  scroll-margin-top: 7rem;
   padding: 22px 0 10px;
 }
 
@@ -204,6 +205,13 @@ h1 {
   display: grid;
   gap: 12px;
   color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.contact-list a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 footer {
@@ -222,12 +230,12 @@ footer {
 <body>
   <header>
     <div class="container nav">
-      <div class="brand"></div>
+      <div class="brand">Aye Min</div>
       <nav class="nav-links">
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>Aye Min 
+        <a href="#contact">Contact</a>
       </nav>
     </div>
   </header>  <main class="container">
@@ -309,9 +317,8 @@ footer {
   <div class="section-card">
     <h2>Contact</h2>
     <div class="contact-list">
-      <div>Email: ayemin624@gmail.com</div>
-      <div>GitHub: github.com/yourusername</div>
-      <div>LinkedIn:https://www.linkedin.com/in/aye-min-aaa3a2118?utm_source=share_via&utm_content=profile&utm_medium=member_android </div>
+      <div>Email: <a href="mailto:ayemin624@gmail.com">ayemin624@gmail.com</a></div>
+      <div>LinkedIn: <a href="https://www.linkedin.com/in/aye-min-aaa3a2118">Aye Min on LinkedIn</a></div>
     </div>
   </div>
 </section>
